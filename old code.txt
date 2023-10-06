@@ -1,0 +1,172 @@
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<time.h>
+struct student
+{
+	char name[50],address[50];
+	int roll,pin;
+};
+void att()
+{
+	FILE *f;
+	struct student s[100];
+	int pin,i=0;
+	printf("\n\n ATTENDENCE ENTRY\n\n");
+	printf("Enter your Pin Code:");
+	scanf("%d",&pin);
+	f=fopen("Details\\detail.bin","rb");
+	fread(&s,sizeof(struct student),100,f);
+	fclose(f);
+	for(i=0;i<100;i++)
+	{
+		if(pin==s[i].pin)
+		{
+			printf("\n\t\t!!THANK YOU!!\n\t%s you are present Today\n",s[i].name);
+			return;
+		}
+	}
+	printf("\n\t\tSORRY!!\n\tStudent Data Not Found\n");
+	return;
+	
+		
+}
+void addstudent()
+{
+	struct student p,p1;
+	FILE *fp;
+	printf("Enter Student's Name:");
+	fflush(stdin);
+	gets(p.name);
+	printf("Enter Roll:");
+	scanf("%d",&p.roll);
+	printf("Enter Address:");
+	fflush(stdin);
+	gets(p.address);
+	printf("Enter Unique Pin:");
+	scanf("%d",&p.pin);
+	fp=fopen("Details\\detail.bin","a+b");
+	fwrite(&p,sizeof(struct student),1,fp);
+	fclose(fp);
+	printf("\n\n\tDetails of %s is Added Successfully\n\n",p.name);
+	/*fp=fopen("Details\\detail.bin","rb");
+	fread(&p1,sizeof(struct student),1,fp);
+	printf("%s\n%d",p1.name,p1.pin);
+	fclose(fp);*/
+	
+}
+void viewattendence()
+{
+	
+}
+void changepassword()
+{
+	FILE *fp;
+	char passc[50],opass[50];
+	fp=fopen("Details\\pass.bin","rb");
+	fread(opass,sizeof(opass),1,fp);
+	fclose(fp);
+	printf("\nEnter Old Password:");
+	fflush(stdin);
+	gets(passc);
+	if(strcmp(passc,opass)==0)
+	{
+		printf("Enter New Password:");
+		fflush(stdin);
+		gets(passc);
+		fp=fopen("Details\\pass.bin","wb");
+		fwrite(passc,sizeof(passc),1,fp);
+		fclose(fp);
+		printf("\n\tPASSWORD SUCCESSFULLY CHANGED\n\n");
+	}
+	else
+	{
+		printf("\n\t!!Incorrect Password!!\n\n");
+		return;
+	}
+	
+}
+void syslog()
+{
+	FILE *f;
+	char pass[50],username[50],passc[50];
+	int ch1;
+	f=fopen("Details\\pass.bin","rb");
+	fread(pass,sizeof(pass),1,f);
+	fclose(f);
+	printf("\nEnter Login Username:");
+	fflush(stdin);
+	gets(username);
+	fflush(stdin);
+	printf("\nEnter Password:");
+	gets(passc);
+	if(strcmp(username,"p")==0&&strcmp(pass,passc)==0)
+	{
+		printf("\n\t\tSYSTEM LOGGED IN SUCCESSFULLY\n\n");
+	s2:	printf("Please Select Option\n\n");
+		printf("1).Add Student\n2).View Attendence Details\n3).Change Password\n4).Log Out\n\n");
+		printf("Enter Your Choice:");
+		scanf("%d",&ch1);
+		switch(ch1)
+		{
+			case 1:
+				addstudent();
+				goto s2;
+				break;
+			case 2:
+				viewattendence();
+				goto s2;
+				break;
+			case 3:
+				changepassword();
+				goto s2;
+				break;
+			case 4:
+				printf("\n\n\t\tSYSTEM LOGGED OUT SUCCESSFULLY\n\n");
+				return;
+				break;
+			default:
+				printf("\n!!Select Proper Option!!\n\n");
+				goto s2;
+		}
+		
+	}
+	else
+	{
+		printf("\n\t\t!!!!Incorrect Username or Password!!!!!\n");
+		return;
+	}
+	
+	
+}
+int main()
+{
+	int ch;
+	printf("**********************************************************\n");
+    printf("*                                                        *\n");
+    printf("*                BCT CD ATTENDANCE SYSTEM                *\n");
+    printf("*                                                        *\n");
+    printf("**********************************************************\n");
+	printf("\n\tWELCOME TO BCT CD ATTENDENCE SYSTEM\t\n");
+s2:	printf("\nPlease Select the options:\n");
+	printf("1).Attendence Entry\n2).Admin Login\n\n");
+	printf("Enter your Choice:");
+	scanf("%d",&ch);
+	switch(ch)
+	{
+		case 1:
+			att();
+			goto s2;
+			break;
+		case 2:
+			syslog();
+			goto s2;
+			break;
+		default:
+			printf("\n!!Select proper Option!!\n");
+			goto s2;
+			
+	}
+	getch();
+}
