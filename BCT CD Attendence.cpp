@@ -60,7 +60,7 @@ void heading3()
 	system("cls");
 	printf("**********************************************************\n");
     printf("*                                                        *\n");
-    printf("*                BCT CD ATTENDANCE SYSTEM                *\n");
+    printf("*                BCT CD ATTENDANCE SYSTEM :)))               *\n");
     printf("*                                                        *\n");
     printf("**********************************************************\n");
     printf("##########################################################\n");
